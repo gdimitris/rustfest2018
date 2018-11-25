@@ -28,23 +28,45 @@ pub enum Token {
 }
 
 /// This struct needs some fields!
-pub struct Lexer;
+pub struct Lexer<'a> {
+    src: &'a str
+}
 
-impl Lexer {
-    /// It also needs some code
-    pub fn new(source: &str) -> Self {
-        Lexer
+
+impl<'a> Lexer<'a> {
+    pub fn new(source: &'a str) -> Self {
+        Lexer { src: source }  
+    }
+
+    fn determine_token(b: u8) -> Option<Token> {
+        match b as char {
+            '+' => Some(Token::Add),
+            '-' => Some(Token::Subtract),
+            '*' => Some(Token::Multiply),
+            '/' => Some(Token::Divide),
+            '=' => Some(Token::Assign),
+            ';' => Some(Token::Semicolon),
+            '0'...'9' => Some(Token::Number),
+            'a'...'z' => Some(Token::Identifier),
+            'A'...'Z' => Some(Token::Identifier),
+            _  => None
+        }
     }
 }
 
 /// We will also use the `Iterator` trait from the
 /// standard library for our Lexer.
-impl Iterator for Lexer {
+impl<'a> Iterator for Lexer<'a> {
     type Item = Token;
 
     fn next(&mut self) -> Option<Token> {
         None
     }
+
+    fn eq(&mut self) -> Option<Token> {
+        None
+    }
+
 }
 
 #[cfg(test)]
